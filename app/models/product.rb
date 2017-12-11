@@ -1,4 +1,9 @@
 class Product < ApplicationRecord
+  validates :name, presence: true
+  validates :name, uniqueness: true
+  validates :description, length: {in: 10..500}
+
+
   def as_json
     {
       id: id,
