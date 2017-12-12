@@ -23,8 +23,13 @@ class ProductsController < ApplicationController
       image: params['image'],
       in_stock: params['in_stock']
     )
-    product.save
-    render json: product.as_json
+    if product.save
+      # happy path
+      render json: product.as_json
+    else
+      # sad path
+      render json: {errors: product.errors.full_messages}
+    end
   end
 
   def update
@@ -33,15 +38,19 @@ class ProductsController < ApplicationController
     # get the product from the db
     product = Product.find_by(id: the_id)
     # modify that product based on the params hash
-    product.update(
+    if product.update(
       name: params[:name],
       price: params[:price],
       description: params[:description],
       image: params[:image],
       in_stock: params[:in_stock]
     )
+      render json: product.as_json
+    else
+      # sad path
+      render json: { errors: product.errors.full_messages }
+    end
 
-    render json: product.as_json
   end
 
   def destroy
