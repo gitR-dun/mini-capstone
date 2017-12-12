@@ -13,4 +13,43 @@ class ProductsController < ApplicationController
     # show that product to the user
     render json: product.as_json
   end
+
+  def create
+    # make a new instance of a product, save it to the db
+    product = Product.new(
+      name: params['name'],
+      price: params['price'],
+      description: params['description'],
+      image: params['image'],
+      in_stock: params['in_stock']
+    )
+    product.save
+    render json: product.as_json
+  end
+
+  def update
+    # get the id
+    the_id = params[:id]
+    # get the product from the db
+    product = Product.find_by(id: the_id)
+    # modify that product based on the params hash
+    product.update(
+      name: params[:name],
+      price: params[:price],
+      description: params[:description],
+      image: params[:image],
+      in_stock: params[:in_stock]
+    )
+
+    render json: product.as_json
+  end
+
+  def destroy
+    # find the product
+    the_id = params[:id]
+    product = Product.find(the_id)
+    # destroy the product
+    product.destroy
+    render json: {message: "You deleted the product"}
+  end
 end
