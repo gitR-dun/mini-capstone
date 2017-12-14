@@ -2,7 +2,17 @@ class ProductsController < ApplicationController
   def index
     # show the user all the products
     # get all the products
-    products = Product.all
+
+    # I need to filter based on search term AND sort by id OR price
+
+    if params[:sort_by_price] == 'true'
+      the_sort_attribute = :price
+    else
+      the_sort_attribute = :id
+    end
+
+    search = params[:search_term]
+    products = Product.where("name LIKE ?", "%#{search}%").order(the_sort_attribute)
     # show em
     render json: products.as_json
   end

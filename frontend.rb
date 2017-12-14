@@ -5,6 +5,7 @@ p "Welcome to my store!!!"
 p "pick an option"
 
 p '[1] Show all the products'
+p '[1.1] Search for a product'
 p '[2] Show one of the products'
 p '[3] Make a new product'
 p '[4] Update a product'
@@ -17,6 +18,20 @@ if user_input == '1'
   # show all the products in my database
   response = Unirest.get("localhost:3000/products")
   pp response.body
+elsif user_input == '1.1'
+  # ask the user what they want to search for
+  p "What would you like to search for?"
+  the_search_term = gets.chomp
+
+  p "would you like to sort by price? enter 'true' if so"
+  new_user_input = gets.chomp
+
+  # search for that thing, unirest call
+  response = Unirest.get("localhost:3000/products", parameters: {search_term: the_search_term, sort_by_price: new_user_input})
+  pp response.body
+
+  # print out the results
+
 elsif user_input == '2'
   # show
   # get the particular product's id from the user
