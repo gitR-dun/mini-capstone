@@ -6,6 +6,13 @@ class Product < ApplicationRecord
   validates :description, presence: true
   validates :description, length: { in: 10..500 }
 
+  def supplier
+    # an instance of supplier
+    # how can I get a particular supplier
+    # supplier id of this particular product
+    Supplier.find_by(id: supplier_id)
+  end
+
   def as_json
     {
       id: id,
