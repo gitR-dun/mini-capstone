@@ -22,7 +22,8 @@ class Product < ApplicationRecord
       image: image,
       is_discounted?: is_discounted?,
       tax: tax,
-      total: total
+      total: total,
+      supplier: supplier.as_json
     }
   end
 
