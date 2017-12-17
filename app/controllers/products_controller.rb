@@ -30,7 +30,7 @@ class ProductsController < ApplicationController
       name: params['name'],
       price: params['price'],
       description: params['description'],
-      image: params['image'],
+      # image: params['image'],
       in_stock: params['in_stock']
     )
     if product.save
@@ -52,7 +52,7 @@ class ProductsController < ApplicationController
       name: params[:name],
       price: params[:price],
       description: params[:description],
-      image: params[:image],
+      # image: params[:image],
       in_stock: params[:in_stock]
     )
       render json: product.as_json

@@ -1,4 +1,7 @@
 class Product < ApplicationRecord
+  belongs_to :supplier
+  has_many :images
+
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :price, presence: true
@@ -6,24 +9,18 @@ class Product < ApplicationRecord
   validates :description, presence: true
   validates :description, length: { in: 10..500 }
 
-  def supplier
-    # an instance of supplier
-    # how can I get a particular supplier
-    # supplier id of this particular product
-    Supplier.find_by(id: supplier_id)
-  end
-
   def as_json
     {
       id: id,
       name: name,
       price: price,
       description: description,
-      image: image,
+      # image: image,
       is_discounted?: is_discounted?,
       tax: tax,
       total: total,
-      supplier: supplier.as_json
+      supplier: supplier.as_json,
+      images: images
     }
   end
 
