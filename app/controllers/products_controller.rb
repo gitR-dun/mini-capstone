@@ -1,5 +1,8 @@
 class ProductsController < ApplicationController
   def index
+    p '*' * 50
+    p current_user
+    p '*' * 50
     # show the user all the products
     # get all the products
 
