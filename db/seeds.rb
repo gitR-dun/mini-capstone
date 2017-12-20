@@ -1,11 +1,19 @@
-products = Product.all
+CategoryProduct.create!(product_id: 1, category_id: 1)
+CategoryProduct.create!(product_id: 2, category_id: 2)
+CategoryProduct.create!(product_id: 3, category_id: 1)
+CategoryProduct.create!(product_id: 4, category_id: 2)
+CategoryProduct.create!(product_id: 5, category_id: 1)
+CategoryProduct.create!(product_id: 6, category_id: 2)
+CategoryProduct.create!(product_id: 6, category_id: 1)
 
-products.each do |product|
-  Image.create!(
-    url: product.image,
-    product_id: product.id
-  )
-end
+# products = Product.all
+
+# products.each do |product|
+#   Image.create!(
+#     url: product.image,
+#     product_id: product.id
+#   )
+# end
 
 
 

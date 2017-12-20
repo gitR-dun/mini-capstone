@@ -6,15 +6,21 @@ while true
   p "Welcome to my store!!!"
   p "pick an option"
 
-  p '[1] Show all the products'
-  p '[1.1] Search for a product'
-  p '[2] Show one of the products'
-  p '[3] Make a new product'
-  p '[4] Update a product'
-  p '[5] Delete a product'
-  p '[6] Signup'
-  p '[7] Log in'
-  p '[8] Log out'
+  # not logged in => guest
+  # logged in => customer
+  # admin => admin
+  p '[1] Show all the products' #everybody
+  p '[1.1] Search for a product' # everybody
+  p '[1.2] Search for products in a particular category' # everybody
+  p '[2] Show one of the products' # everybody
+  p '[3] Make a new product' # admin
+  p '[4] Update a product' # admin
+  p '[5] Delete a product' # admin
+  p '[6] Signup' # anybody
+  p '[7] Log in' # everybody
+  p '[8] Log out' # everybody
+  p '[9] Purchase a product' # customer
+  p '[10] Look at all the orders' # customer
   p 'type "exit" to leave'
 
   user_input = gets.chomp
@@ -37,7 +43,13 @@ while true
     pp response.body
 
     # print out the results
+  elsif user_input == '1.2'
+    # show them a bunch of products but ONLY the ones in a particular category
+    p "what is the id of the category you want to look at?"
+    user_category_id = gets.chomp
+    response = Unirest.get("localhost:3000/products?category_id_input=#{user_category_id}")
 
+    pp response.body
   elsif user_input == '2'
     # show
     # get the particular product's id from the user
@@ -134,6 +146,22 @@ while true
     jwt = ""
     Unirest.clear_default_headers()
     p "You just logged out"
+  elsif user_input == '9'
+    the_params = {}
+    # ask the user which product they would like to purchase
+    p "which product would you like to purchase"
+    the_params[:product_id] = gets.chomp
+    # ask the user how many they would like
+    p "how many would you like?"
+    the_params[:quantity] = gets.chomp
+    # make a request to the app, which will purchase the product, make a new instance of order
+    response = Unirest.post("localhost:3000/orders", parameters: the_params)
+    pp response.body
+  elsif user_input == '10'
+    # show the user their orders, index action of the orders controller
+    response = Unirest.get("localhost:3000/orders")
+    pp response.body
+
   elsif user_input == 'exit'
     break
   end

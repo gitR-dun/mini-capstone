@@ -1,22 +1,20 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_admin, only: [:create, :update, :destroy]
+
   def index
-    p '*' * 50
-    p current_user
-    p '*' * 50
-    # show the user all the products
-    # get all the products
+    # if params[:sort_by_price] == 'true'
+    #   the_sort_attribute = :price
+    # else
+    #   the_sort_attribute = :id
+    # end
+    # search = params[:search_term]
+    # products = Product.where("name LIKE ?", "%#{search}%").order(the_sort_attribute)
 
-    # I need to filter based on search term AND sort by id OR price
+    # show the products in a particular category
+    category = Category.find_by(id: params[:category_id_input])
+    products = category.products
 
-    if params[:sort_by_price] == 'true'
-      the_sort_attribute = :price
-    else
-      the_sort_attribute = :id
-    end
 
-    search = params[:search_term]
-    products = Product.where("name LIKE ?", "%#{search}%").order(the_sort_attribute)
-    # show em
     render json: products.as_json
   end
 
@@ -28,13 +26,16 @@ class ProductsController < ApplicationController
   end
 
   def create
+    # check if someone is an admin
+    # if they are, let them do the stuff they want
+    # if they are NOT, don't let them
     # make a new instance of a product, save it to the db
     product = Product.new(
-      name: params['name'],
-      price: params['price'],
-      description: params['description'],
+      name: params[:name],
+      price: params[:price],
+      description: params[:description],
       # image: params['image'],
-      in_stock: params['in_stock']
+      in_stock: params[:in_stock]
     )
     if product.save
       # happy path
@@ -63,7 +64,6 @@ class ProductsController < ApplicationController
       # sad path
       render json: { errors: product.errors.full_messages }
     end
-
   end
 
   def destroy
