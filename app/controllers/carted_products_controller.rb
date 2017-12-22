@@ -15,9 +15,17 @@ class CartedProductsController < ApplicationController
       status: "carted"
     )
     if carted_product.save
-      render json: carted_product
+      render json: carted_product.as_json
     else
       render json: {errors: carted_product.errors.full_messages}
     end
+  end
+
+  def destroy
+    # grab the item
+    carted_product = CartedProduct.find_by(id: params[:id])
+    # remove the item from the shopping cart
+    carted_product.update(status: 'removed')
+    render json: {message: "You deleted the item from your cart"}
   end
 end

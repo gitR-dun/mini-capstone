@@ -19,7 +19,7 @@ while true
   p '[6] Signup' # anybody
   p '[7] Log in' # everybody
   p '[8] Log out' # everybody
-  p '[9] Purchase a product' # customer
+  p '[9] Purchase your products' # customer
   p '[10] Look at all the orders' # customer
   p "[11] Add a product to your cart"
   p "[12] Look at your cart"
@@ -149,15 +149,7 @@ while true
     Unirest.clear_default_headers()
     p "You just logged out"
   elsif user_input == '9'
-    the_params = {}
-    # ask the user which product they would like to purchase
-    p "which product would you like to purchase"
-    the_params[:product_id] = gets.chomp
-    # ask the user how many they would like
-    p "how many would you like?"
-    the_params[:quantity] = gets.chomp
-    # make a request to the app, which will purchase the product, make a new instance of order
-    response = Unirest.post("localhost:3000/orders", parameters: the_params)
+    response = Unirest.post("localhost:3000/orders")
     pp response.body
   elsif user_input == '10'
     # show the user their orders, index action of the orders controller
@@ -179,8 +171,16 @@ while true
     pp response.body
   elsif user_input == '12'
     # show the user their carted_products that have the status of 'carted'
+
     response = Unirest.get("localhost:3000/carted_products")
     pp response.body
+    p 'Which item would you like to remove from your shopping cart?, If none, type q'
+    item = gets.chomp
+    if item == 'q'
+    else
+      response = Unirest.delete("localhost:3000/carted_products/#{item}")
+      pp response.body
+    end
   elsif user_input == 'exit'
     break
   end
