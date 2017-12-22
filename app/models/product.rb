@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  has_many :carted_products
   has_many :orders
   belongs_to :supplier
   has_many :images

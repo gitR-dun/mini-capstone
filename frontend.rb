@@ -21,6 +21,8 @@ while true
   p '[8] Log out' # everybody
   p '[9] Purchase a product' # customer
   p '[10] Look at all the orders' # customer
+  p "[11] Add a product to your cart"
+  p "[12] Look at your cart"
   p 'type "exit" to leave'
 
   user_input = gets.chomp
@@ -162,6 +164,23 @@ while true
     response = Unirest.get("localhost:3000/orders")
     pp response.body
 
+  elsif user_input == '11'
+    # have them add an item to their cart
+    p "which product?"
+    product_id = gets.chomp
+    p "how many?"
+    amount = gets.chomp
+    # make a unirest call to create a new carted_product
+    response = Unirest.post("localhost:3000/carted_products", parameters: {
+        product_id: product_id,
+        quantity: amount
+      }
+    )
+    pp response.body
+  elsif user_input == '12'
+    # show the user their carted_products that have the status of 'carted'
+    response = Unirest.get("localhost:3000/carted_products")
+    pp response.body
   elsif user_input == 'exit'
     break
   end
